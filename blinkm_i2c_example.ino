@@ -1,0 +1,91 @@
+#include <Wire.h>
+#include "blinkm.h"
+
+byte addresses[] = { 0x01, 0x02, 0x03, 0x04 };
+
+void setup() {
+	Serial.begin(57600);
+	Wire.begin();
+	delay(50);
+}
+
+void loop() {
+	for (int i = 0; i < sizeof(addresses); i++) {
+		byte address = addresses[i];
+		blinkm_stop_script(address);
+	}
+	//night_rider_pattern(100);
+	new_pattern(1000, 1, 0, 0);
+	new_pattern(1000, 0, 1, 0);
+	new_pattern(1000, 0, 0, 1);
+}
+
+static void off_pattern(int interval) {
+	for (int i = 0; i < sizeof(addresses); i++) {
+		byte address = addresses[i];
+		blinkm_change_color(address, 0x00, 0x00, 0x00);
+	}
+	delay(interval);
+}
+
+static void new_pattern(int interval, int red, int green, int blue) {
+	int second_interval = interval * 2;
+	for (int i = 0; i < sizeof(addresses); i++) {
+		byte address = addresses[i];
+		if(red == 1) {
+			blinkm_change_color(address, 0xFF, 0x00, 0x00);
+		} else if (green == 1) {
+			blinkm_change_color(address, 0x00, 0xFF, 0x00);
+		} else if (blue == 1) {
+			blinkm_change_color(address, 0x00, 0x00, 0xFF);
+		}
+		delay(interval);
+	}
+	delay(interval);
+}
+
+static void night_rider_pattern(int interval) {
+	int second_interval = interval * 2;
+	blinkm_change_color(0x01, 0xFF, 0x00, 0x00);
+	blinkm_change_color(0x02, 0x00, 0x00, 0x00);
+	blinkm_change_color(0x03, 0x00, 0x00, 0x00);
+	blinkm_change_color(0x04, 0x00, 0x00, 0x00);
+	delay(interval);
+	blinkm_change_color(0x01, 0x00, 0x00, 0x00);
+	blinkm_change_color(0x02, 0xFF, 0x00, 0x00);
+	blinkm_change_color(0x03, 0x00, 0x00, 0x00);
+	blinkm_change_color(0x04, 0x00, 0x00, 0x00);
+	delay(interval);
+	blinkm_change_color(0x01, 0x00, 0x00, 0x00);
+	blinkm_change_color(0x02, 0x00, 0x00, 0x00);
+	blinkm_change_color(0x03, 0xFF, 0x00, 0x00);
+	blinkm_change_color(0x04, 0x00, 0x00, 0x00);
+	delay(interval);
+	blinkm_change_color(0x01, 0x00, 0x00, 0x00);
+	blinkm_change_color(0x02, 0x00, 0x00, 0x00);
+	blinkm_change_color(0x03, 0x00, 0x00, 0x00);
+	blinkm_change_color(0x04, 0xFF, 0x00, 0x00);
+	delay(interval);
+	delay(second_interval);
+	blinkm_change_color(0x01, 0x00, 0x00, 0x00);
+	blinkm_change_color(0x02, 0x00, 0x00, 0x00);
+	blinkm_change_color(0x03, 0x00, 0x00, 0x00);
+	blinkm_change_color(0x04, 0xFF, 0x00, 0x00);
+	delay(interval);
+	blinkm_change_color(0x01, 0x00, 0x00, 0x00);
+	blinkm_change_color(0x02, 0x00, 0x00, 0x00);
+	blinkm_change_color(0x03, 0xFF, 0x00, 0x00);
+	blinkm_change_color(0x04, 0x00, 0x00, 0x00);
+	delay(interval);
+	blinkm_change_color(0x01, 0x00, 0x00, 0x00);
+	blinkm_change_color(0x02, 0xFF, 0x00, 0x00);
+	blinkm_change_color(0x03, 0x00, 0x00, 0x00);
+	blinkm_change_color(0x04, 0x00, 0x00, 0x00);
+	delay(interval);
+	blinkm_change_color(0x01, 0xFF, 0x00, 0x00);
+	blinkm_change_color(0x02, 0x00, 0x00, 0x00);
+	blinkm_change_color(0x03, 0x00, 0x00, 0x00);
+	blinkm_change_color(0x04, 0x00, 0x00, 0x00);
+	delay(interval);
+	delay(second_interval);
+}
